@@ -12,7 +12,7 @@ Workshop Android 4
 
 
 ### Avant de commencer:
-**Récupérer** le code du workshop précédent, formater : [Lien](http://markdownpad.com).
+**Récupérer** le code du workshop précédent, formater : [Lien](https://github.com/delbos-d/WorkshopAndroid/blob/master/Workshop4/Ressouce.W4.zip).
 
 **Bonne Chance!** 
 
