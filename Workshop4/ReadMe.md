@@ -12,7 +12,7 @@ Workshop Android 4
 
 
 ### Avant de commencer:
-**Récupérer** le code du workshop précédent, formater : [Lien](https://github.com/delbos-d/WorkshopAndroid/blob/master/Workshop4/Ressouce.W4.zip).
+**Récupérer** le code du workshop précédent, formater : Fichier "Ressource.W4.zip".
 
 **Bonne Chance!** 
 
@@ -237,3 +237,6 @@ Code (Générer un chiffre aléatoire):
 	int random_value = rand.newInt(max + 1); //Le résultat: [0;max]
 
 ### → Lancer votre simulateur!
+
+
+## Lien vers le projet terminé → [Lien](https://github.com/DwarfNet/Workshop4)
