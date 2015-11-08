@@ -10,9 +10,13 @@ Workshop Android 4
 * Manipuler l'affichage d'image
 * Manipuler l'affichage des objects dans une view
 
-
 ### Avant de commencer:
 **Récupérer** le code du workshop précédent, formater : Fichier "Ressource.W4.zip".
+* Les fichiers `.java` doivent être dans le dossier `app/src/main/java/{package}/.`
+* Les fichiers `.xml` des vues doivent être dans le dossier `app/src/main/res/layout/.`
+* Le fichier `strings.xml` doit être dans le dossier `app/src/main/res/values/.`
+* Le fichier `AndroidManifest.xml` doit être dans le dossier `app/src/main/.`
+* Les fihciers `.png` doivent être dans le dossier `app/src/main/res/drawable/.`
 
 **Bonne Chance!** 
 
