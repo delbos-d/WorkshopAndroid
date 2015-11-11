@@ -3,20 +3,26 @@
 
 Workshop Android 5
 ==================
+by delbos-d & DwarfNet
 ### Objectifs:
-* Comprendre le fonctionnement du réseau sur Android
-* Comprendre le fonctionnement d'une API et de la communication avec une API
-* Exécuter des requètes réseaux
-* Récupérer le contenu d'une réquète
-* Utiliser Retrofit pour communiquer avec une API
+* Comprendre le fonctionnement du réseau sur Android.
+* Comprendre le fonctionnement d'une API et de la communication avec une API.
+* Utiliser Retrofit pour communiquer avec une API :
+	* Exécuter des requètes réseaux.
+	* Récupérer le contenu d'une réquète.
+* Gérer les autorisations d'une application.
 
 ### Avant de commencer:
-**Récupérer** le code pour du workshop précédent: [Lien](https://github.com/DwarfNet/Workshop4)
+**Récupérer**:
+* Le code pour du workshop précédent: [Lien](https://github.com/DwarfNet/Workshop4)
+* Le fichers ressource Ressource.W5.zip
+
 * Les fichiers `.java` doivent être dans le dossier `app/src/main/java/{package}/.`
 * Les fichiers `.xml` des vues doivent être dans le dossier `app/src/main/res/layout/.`
 * Le fichier `strings.xml` doit être dans le dossier `app/src/main/res/values/.`
 * Le fichier `AndroidManifest.xml` doit être dans le dossier `app/src/main/.`
 * Les fihciers `.png` doivent être dans le dossier `app/src/main/res/drawable/.`
+* Les fichiers dans le dossier `libs` doit être à la racine `app/libs/.`
 
 **Bonne Chance!** 
 
@@ -29,7 +35,7 @@ Workshop Android 5
 * PUT: /workshop
 * DELETE: /workshop
 
-PS: Si tu veux tester avec d'autre url car celle-ci ne marcherons pttr pas vas sur: [lien](www.mockable.io) dans Try et crées tes requètes.
+PS: Si tu veux tester avec d'autre url car celle-ci ne marcherons pttr pas vas sur: [lien](https://www.mockable.io) dans Try et crées tes requètes.
 
 ### Etapes:
 
@@ -40,25 +46,27 @@ PS: Si tu veux tester avec d'autre url car celle-ci ne marcherons pttr pas vas s
 * Format JSON
 * Comunication Mobile <-> API <-> BDD
 
+## Mise en place des outils
+
 #### Faire une vue et une classe pour la requète
 
 *	Details: 
-    *	Créer un layout `web_request.xml` avec un button et textview
-    *	Créer une activité (classe) `RequestEasy.java` avec les méthode de base `onCreate` / `onClick` / (`setView`)
-    *	Déclarer l'activité dans le fichier `AndroidManifest.xml`
-    *	Dans l'Activité lancé au démarrage (du workshop précendent) ajouter un button `brequest_easy` pour lancer la nouvelle activité `RequestEasy` (voir Workshop4)
-    *	Afficher le layout `web_request.xml` et initialiser les buttons.
+	*	Dans l'Activité lancé au démarrage (du workshop précendent) ajouter un button `brequest_easy` pour lancer la nouvelle activité `RequestRetrofit` (voir Workshop4)
+   *	Créer un layout `web_request.xml` avec un button et un textview
+   *	Créer une activité (classe) `RequestRetrofit.java` avec les méthode de base `onCreate` / `onClick` / (`setView`)
+   *	Déclarer l'activité dans le fichier `AndroidManifest.xml`. 
+   *	Afficher le layout `web_request.xml` et initialiser les buttons.
 
 *	Contenu:
-	*	Un `Button`
-		*	id: brequest
-		*	text: "Executer"
-	*	Un `TextView`
-		*	id: tresult
-		*	text: "" (vide)
-	*	Un `Button`
+	*	Un `Button` dans `activity_main.xml`:
 		*	id: brequest_easy
 		*	text: "Requete facile"
+	*	Un `Button` dans `web_request.xml`:
+		*	id: brequest
+		*	text: "Executer"
+	*	Un `TextView` dans `web_request.xml`:
+		*	id: tresult
+		*	text: "" (vide)
 	
 Code (Exemple d'Activité):   
 
@@ -89,101 +97,52 @@ Code (Exemple de déclaration d'actvité dans `AndroidManifest.xml`):
         android:theme="@style/AppTheme" >
     </activity>
         
-#### Executer une requete simple (POST)
-    
-*	Details: 
-    *	Créer une méthode (fonction) `requestPost` avec un argument `String url`
-    *	Appeler la méthode `request` avec un clique sur `brequest`
+#### Autoriser la création de socket par l'application
+* Details:
+	* Ajouter une autorisation `INTERNET` dans le fichier `AndroidManifest.xml`.
 
-Code (Exemple d'appel POST):
+Code:
 
-	Thread t = new Thread(new Runnable() 
-	{
-		public void run() 
-		{
-			try
-	        {
-	        	HttpPost httpvar = new HttpPost("URL");
-	    		DefaultHttpClient httpclient = new DefaultHttpClient();
-	            HttpResponse response = httpclient.execute(httpvar);
-			} 
-			catch (ClientProtocolException e) {e.printStackTrace();} 
-			catch (IOException e) {e.printStackTrace();} 
-			catch (Exception e) {e.printStackTrace();}
-		}
-	});
-	t.start();
-	try {t.join();} catch (InterruptedException e) {e.printStackTrace();}
-	
-#### Récupérer le contenu d'une requète
+	<?xml version="1.0" encoding="utf-8"?>
+	<manifest {...} >
+		package= {...}
+		<uses-permission android:name="android.permission.INTERNET" />
+		<application {...}
+		</application>
+	</manifest>
 
-* Détails:
-    * Afficher dans `tresult` le résultat d'une requète
-
-Code (Récupérer le contenu d'une requète):
-
-    HttpResponse response = httpclient.execute(httpvar);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-    String result = reader.readLine();
-
-Code (Documentation pour changer le contenu d'un TextView): [Lien](http://developer.android.com/reference/android/widget/TextView.html#setText\(java.lang.CharSequence\))
-
-#### Executer une requete plus complexe
-
-* Détails:
-    * Envoyer des paramètres à la requète POST
-* Contenu:
-    * Paramètre: `firstname`, valeur: votre prénom
-    * Paramètre: `secondname`, valeur: votre nom
-
-Code (Ajouter des paramètres à une requète):
-
-    HttpPost httpvar = new HttpPost("URL");
-    varForm = new ArrayList<NameValuePair>();
-	varForm.add(new BasicNameValuePair("PARAMETER_NAME", "PARAMETER_VALUE")); //A dupliquer
-	httpvar.setEntity(new UrlEncodedFormEntity(varForm, "UTF-8"));
-    HttpResponse response = httpclient.execute(httpvar);
-
-#### Executer une requete GET
-
-* Détails:
-    * Dupliquer la méthode `requestPost` en créant la méthode `requestGet`
-* Contenu:
-    * Remplacer dans la méthode `requestGet` tous le contenu du `try catch` par le système de requète Get
-
-Code (requète Get):
-
-    HttpGet httpget = new HttpGet(URL);
-    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-    SetServerString = Client.execute(httpget, responseHandler);
+## RETROFIT
     
 #### Mettre en place Rétrofit
 
 * Détails:
-    * Télécharger Retrofit 1.9
-    * Créer un dossier `libs` à la racine de votre projet et mettez la librairie dedant
-    * Créer une interface (comme un classe) `ApiTest` vide
+	* Télécharger Retrofit 1.9.
+	* Créer un dossier `libs` à la racine de votre projet.
+	* Mettre le fichier dans le dossier `libs`.
+	* Ajouter Retrofit dans les `dependencies` du `Gradle`.
 
-Code (Interface pour rétrofit)
+Code (dans le fichier `build.gradle (Module: app)`):
 
-    import retrofit.http.GET;
-    
-    public interface ApiAeroclubManager {
-    }
+	dependencies {
+		{...}
+		compile 'com.squareup.retrofit:retrofit:1.9.0' 
+	}
 
 #### Initialiser Rétrofit
 
-* Détails:
-    * Créer une activité (classe) `RequestRetrofit.java` avec les méthode de base `onCreate` / `onClick` / (`setView`)
-    * Dans l'Activité lancé au démarrage (du workshop précendent) ajouter un button `brequest_retrofit` pour lancer la nouvelle activité `RequestRetrofit` (voir Workshop4)
-    * Initialiser rétrofit dans la méthode `onCreate`
-    * Déclarer l'activité dans le fichier `AndroidManifest.xml`
-    * Afficher le layout `web_request.xml` et initialiser les buttons.
+* Créer une interface (comme une classe) `ApiTest`.
 
-Code (Initialisation de Rétrofit 1.9)
+Code (Interface pour rétrofit):
+	
+	public interface ApiTest {
+	}
 
-    RestAdapter adapter = new RestAdapter.Builder().setEndpoint(voir_ressource_url_source).build();
-    ApiTest api = adapter.create(ApiTest.class); //La variable api peut être déclarer en attribut (accessible par toute les méthodes)
+* Initialiser rétrofit dans la méthode `onCreate`
+
+Code (Initialisation de Rétrofit 1.9):
+
+	RestAdapter adapter = new RestAdapter.Builder().setEndpoint(voir_ressource_url_source).build();
+	ApiTest api = adapter.create(ApiTest.class); //La variable 'api' peut être déclarer en attribut (accessible par toute les méthodes)
 
 #### Utiliser rétrofit (GET)
 
@@ -201,7 +160,7 @@ Code (Exemple de méthode pour déclarer une requète GET sur rétrofit 1.9)
 
 Code (Exemple d'appel de la réquète)
 
-    api.getTest(new CallBack<Response> () {
+    api.getTest(new Callback<Response> () {
             @Override
             public void success(Response response, Response response2) {
                 //Code éxecuté en cas de succes
@@ -215,7 +174,11 @@ Code (Exemple d'appel de la réquète)
         
 Code (Exemple pour récupérer le contenu d'une page)
 
-    response.getBody().toString();
+    response.getBody().toString()
+    
+Code (Exemple pour récupe'rer les message d'erreur)
+
+	error.getMessage()
     
 Code (Exemple de `Toast`)
 
@@ -236,7 +199,7 @@ Code (Exemple de méthode pour déclarer une requète POST sur rétrofit 1.9)
 
 Code (Exemple d'appel de la réquète)
 
-    api.postTest("Damien", "Delbos", new CallBack<Response> () {
+    api.postTest("Damien", "Delbos", new Callback<Response> () {
             @Override
             public void success(Response response, Response response2) {
                 //Code éxecuté en cas de succes
@@ -253,7 +216,7 @@ Code (Exemple d'appel de la réquète)
     * Déclarer une méthode dans l'interface `ApiTest` pour définir une requète PUT simple `putTest`
     * Créer une méthode private `requestPut` sans paramètre, dans la Classe courante, et faire un appel de la requète définit
     * Exécuter la méthode `requestPut` dans la méthode `onCreate` aprés l'affichage de la vue et remplir le `tresult` avec le résultat
-    * Afficher un `Toast` en cas d'erreur de la requete avec `Erreur de récupération` dans le champs de texte
+    * Afficher un `Toast` en cas d'erreur de la requete avec `Erreur de modification` dans le champs de texte
 
 Code (Exemple de méthode pour déclarer une requète PUT sur rétrofit 1.9)
 
@@ -262,7 +225,7 @@ Code (Exemple de méthode pour déclarer une requète PUT sur rétrofit 1.9)
 
 Code (Exemple d'appel de la réquète)
 
-    api.putTest(1, 42, new CallBack<Response> () {
+    api.putTest(1, 42, new Callback<Response> () {
             @Override
             public void success(Response response, Response response2) {
                 //Code éxecuté en cas de succes
@@ -278,16 +241,16 @@ Code (Exemple d'appel de la réquète)
     * Déclarer une méthode dans l'interface `ApiTest` pour définir une requète DELETE simple `deleteTest`
     * Créer une méthode private `requestDelete` sans paramètre, dans la Classe courante, et faire un appel de la requète définit
     * Exécuter la méthode `requestDelete` dans la méthode `onCreate` aprés l'affichage de la vue et remplir le `tresult` avec le résultat
-    * Afficher un `Toast` en cas d'erreur de la requete avec `Erreur de récupération` dans le champs de texte
+    * Afficher un `Toast` en cas d'erreur de la requete avec `Erreur de suppression` dans le champs de texte
 
 Code (Exemple de méthode pour déclarer une requète DELETE sur rétrofit 1.9)
 
-    @DELETE("voir_ressource_url_delete"/{id})
+    @DELETE("voir_ressource_url_delete/{id}")
     public void deleteTest(@Path("id") Integer id, Callback<Response> response); //Simple requete DELETE avec des paramètres mais pas de réponse en JSON
 
 Code (Exemple d'appel de la réquète)
 
-    api.deleteTest(42, new CallBack<Response> () {
+    api.deleteTest(42, new Callback<Response> () {
             @Override
             public void success(Response response, Response response2) {
                 //Code éxecuté en cas de succes
@@ -317,12 +280,12 @@ Code (Exemple d'appel de la réquète)
 
 Code (Exemple de méthode pour déclarer une requète GET sur rétrofit 1.9)
 
-    @GET("voir_ressource_url_get"/{id})
+    @GET("voir_ressource_url_get/{id}")
     public void getTest2(@Path("id") Integer id, Callback<DataTest> response); //Simple requete GET avec des paramètres et des réponses en JSON
 
 Code (Exemple d'appel de la réquète)
 
-    api.getTest2(10, new CallBack<DataTest> () {
+    api.getTest2(10, new Callback<DataTest> () {
             @Override
             public void success(DataTest data, Response response2) {
                 //Code éxecuté en cas de succes
@@ -334,3 +297,132 @@ Code (Exemple d'appel de la réquète)
                 //Code éxecuté en cas d'erreur
             }
         });
+
+## ALLER PLUS LOIN 
+
+### Retrofit : vers la 2.0
+
+**Details :**
+
+Pour ceux qui le souhaite, vous pouvez tester la version 2.0 de **retrofit** actuellement en beta. Elle offre entre autre plus de liberté dans les formatages de données, ce qui implique l'utilisation  de `formater` (il n'y en a pas par défault). Elle utilise des mots clef egalement plus parlant.
+
+**ATTENTION!!** Il faut faire attention à la version des tutoriels sur intenet. Depuis environ mi-2015, les post relatif à `retrofit` peuvent etre relatif à la version 1.9 ou 2.0.
+
+Lien de téléchargement de [Retrofit 2.0-beta](http://square.github.io/retrofit/)
+
+Tutoriel pour aider à passer à la 2.0 avec [futurestud.io](https://futurestud.io/blog/retrofit-2-upgrade-guide-from-1-9/) voir completer vos connaissances de Retrofit.
+
+### Retrofit : utilisation des logs
+
+**Details :**
+
+* Ajouter une option lors de la création de du `RestAdapteur`.
+* Differents niveau plus ou moins verbeux existent:
+
+ `NONE` < `BASIC` < `HEADERS` < `HEADERS_AND_ARGS` <  `FULL`
+
+Format :
+	
+	 RestAdapter rest = new RestAdapter.Builder().setEndpoint(Url)
+	 						.setLogLevel(RestAdapter.LogLevel.LEVEL_CHOISI)
+	 						.build();
+
+
+### Retrofit : utilisation de Header
+
+**Details :**
+
+Il est possible d'ajouter des headers aux requetes si nécéssaire.
+
+	@Headers({
+			// Hearders content
+	})
+	@GET("url")
+	void getRequest(param);
+
+### Android : Verification du réseau
+
+**Details :**
+
+* Ajouter la permission `ACCESS_NETWORK_STATE` dans `AndroidManifest.xml`
+* Lors de l'appel de la requete ajouter une verification de l'état du réseau.
+
+Dans `RequestRetrofit.java`:
+	
+	// Network connection verification.
+	ConnectivityManager connMgr = (ConnectivityManager)
+	getSystemService(Context.CONNECTIVITY_SERVICE);
+	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+	if (networkInfo != null && networkInfo.isConnected()) {
+		// Get/Post/Put/Delete request
+	} else {
+		// display error
+	}
+
+### Android : le wifi
+
+Page Android Developper sur le [wifi](http://developer.android.com/reference/android/net/wifi/package-summary.html).
+Cours du CNAM sur le développement en utilisant le wifi sous Android [lien](http://cedric.cnam.fr/~farinone/RSX116/WiFiAndroid.pdf)
+
+* **Utilisation du wifi**
+
+Ajouter le hardware dans le manifest :
+
+	<manifest {...}>
+	<uses-feature android:name="android.hardware.wifi" />
+	{...}
+	</manifest> 
+
+* **Verifier si on est sur un réseau Wifi ou cellulaire**
+
+Autorisation nécéssaire : `ACCES_WIFI_STATE`
+
+        if (WifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
+            // Action
+        }
+        else {
+            // Tu veux te connecter ?
+        }
+
+* **Connection à un wifi** *(NON TESTÉ)*
+
+Autorisation nécéssaire : `ACCES_WIFI_STATE` et `CHANGE_WIFI_STATE`
+
+	String networkSSID = "SSID_NAME";
+	String networkPass = "SSID_PASSPHRASE";
+
+	WifiConfiguration conf = new WifiConfiguration();
+	conf.SSID = "\"" + networkSSID + "\"";
+
+Pour les clefs WEP :
+
+	conf.wepKeys[0] = "\"" + networkPass + "\""; 
+	conf.wepTxKeyIndex = 0;
+	conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+	conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+	
+Pour les clefs WPA :
+
+	conf.preSharedKey = "\""+ networkPass +"\"";
+	
+Pour les réseaux ouvert :
+			
+	conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+	
+Ensuite, ajouter le réseau à Android Wifi Manager :
+
+	WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE); 
+	wifiManager.addNetwork(conf);
+	
+Enfin, se connecter :
+
+	List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+	for( WifiConfiguration i : list ) {
+   		if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+			wifiManager.disconnect();
+			wifiManager.enableNetwork(i.networkId, true);
+			wifiManager.reconnect();
+			break;
+		}
+	}
+
