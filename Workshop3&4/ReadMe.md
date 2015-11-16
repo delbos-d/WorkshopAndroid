@@ -12,11 +12,14 @@ Workshop Android 4
 
 ### Avant de commencer:
 **Récupérer** le code du workshop précédent, formater : Fichier "Ressource.W4.zip".
-* Les fichiers `.java` doivent être dans le dossier `app/src/main/java/{package}/.`
-* Les fichiers `.xml` des vues doivent être dans le dossier `app/src/main/res/layout/.`
 * Le fichier `strings.xml` doit être dans le dossier `app/src/main/res/values/.`
 * Le fichier `AndroidManifest.xml` doit être dans le dossier `app/src/main/.`
+* Les fichiers `.java` doivent être dans le dossier `app/src/main/java/{package}/.`
+* Les fichiers `.xml` des vues doivent être dans le dossier `app/src/main/res/layout/.`
 * Les fihciers `.png` doivent être dans le dossier `app/src/main/res/drawable/.`
+
+**PENSER A CHANGER DANS TOUS LES FICHIERS JAVA LE NOM DU PACKAGE PAR LE VOTRE!!**
+**SUPPRIMER LE MENU DE VOTRE APPLICATION (TOUS LE DOSSIER)**
 
 **Bonne Chance!** 
 
@@ -134,7 +137,7 @@ Code (Afficher une popup):
 Code (Fonction de vérification d'email):
 
 	public static boolean checkEmail(String value) {
-		if (value.length() < 4 || value.length() > 15)
+		if (value.length() < 4 || value.length() > 50)
 			return (false);
 		/*
 		//Check the email validity using pattern
