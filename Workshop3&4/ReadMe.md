@@ -208,6 +208,17 @@ Code (Surcharger la méthode `onCreate`)
        //Set the view here
     }
 
+Code (Appeler une activité (sans résultat))
+	
+	startActivity(new Intent(this, Class_name.class));
+	
+Code (Appeler une activité (avec possibilité de résultat))
+
+	//This code must change according the activity
+	public final static int ACTIVITY_CODE = 0;
+	//Class_name should be changed by the True class name
+	startActivityForResult(new Intent(this, Class_name.class), ACTIVITY_CODE);
+
 #### Afficher une image lors d'un clique (java)
 *	Détails: Lors du clique sur le bouton `bAbra` cacher ce bouton et faire apparaitre l'image et l'autre bouton `bNext`.
 *	Contenu:
